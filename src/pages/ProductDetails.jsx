@@ -37,14 +37,14 @@ const ProductDetails = () => {
       <div className="w-full">
         <p className="font-semibold text-lg py-3">{productDetails.title} </p>
         <p>
-          <span className="font-semibold py-3">Model :</span>{" "}
+          <span className="font-semibold py-3">Model :</span>
           {productDetails.model}
         </p>
         <p className="py-3 font-semibold">${productDetails.price}</p>
         <p className="font-light ">{productDetails.description}</p>
         <button
           onClick={()=>handleCartButton(productDetails)}
-          className="text-center font-semibold text-2xl  cursor-pointer w-[300px] py-2 bg-gray-900 text-white py-2 mt-4"
+          className="text-center font-semibold text-2xl  cursor-pointer w-[300px]  bg-gray-900 text-white py-2 mt-4"
         >
           Add to Cart
         </button>

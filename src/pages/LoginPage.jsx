@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import CommonForm from "../components/forms/CommonForm";
 import { LogininputData } from "../components/forms/FormDetails";
 import { AuthContext } from "../context/AuthContext";
-import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import auth from "./FireBase";
 import { useNavigate } from "react-router-dom";
 
 
@@ -15,15 +13,12 @@ const LoginPage = () => {
     function handleLoginForm(e){
         e.preventDefault()
         handleLoginWithFireBase().then((res)=>{
-            if(res.user){
-                updateProfile(res.user,{
-                    displayName:loginFormData.name
-                })
-            }
-        }
-        ).catch((error)=>console.log(error)
-        )
-        navigate('/')
+          console.log(res,"Login");
+          if(res){
+            navigate("/")
+          }
+          
+        })
     }
    
   return (
