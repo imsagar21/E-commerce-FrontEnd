@@ -1,7 +1,7 @@
 
 export const RegisterinputData = [
     {
-        name:"username",
+        name:"name",
         type:"text",
         placeholder:"Enter Your Name",
         label:"Username",
