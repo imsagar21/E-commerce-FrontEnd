@@ -1,11 +1,15 @@
-import React, { useContext } from 'react'
-import { ECommerceContext } from '../context/Context'
+import React from 'react'
 import CartTile from '../components/CartTile';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Cart = () => {
    const navigate =  useNavigate()
-    const {cartItems} = useContext(ECommerceContext)
+  const cartItems =  useSelector((state)=>state.cart.cartItems)
+
+//   useEffect(()=>{
+//     JSON.parse(localStorage.getItem("cartItems")) || []
+//   },[])
     
   return (
     <div className='flex justify-between gap-30 px-30 mt-20'>
@@ -20,7 +24,7 @@ const Cart = () => {
         </div>
         <div className=' mt-10'> 
         <h1 className='text-center font-bold text-2xl'>Order Summary</h1>
-        <h1 className='py-4 font-bold'>Total Price:$ {
+        <h1 className='py-4 font-bold'>Total Price: ₹{
                 cartItems.reduce((acc,item)=>acc+item.totalPrice,0).toFixed(2)
             }</h1>
         <div className='flex gap-3 mt-4'>

@@ -2,15 +2,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import EcommerceState from "./context/Context.jsx";
-import AuthState from "./context/AuthContext.jsx";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-      <AuthState>
-    <EcommerceState>
-        <App />
-    </EcommerceState>
-      </AuthState>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 );

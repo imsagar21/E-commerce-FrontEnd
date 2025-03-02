@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import { AuthContext } from '../context/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const LoginRoutes = () => {
-    const {user} = useContext(AuthContext)
+    const user = useSelector((state)=>state.login.user)
+    
     return user ? <Navigate to={"/"}/> : <Outlet/>
 }
 

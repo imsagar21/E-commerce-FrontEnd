@@ -9,11 +9,19 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import Orders from "./pages/Orders";
-import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
 import LoginRoutes from "./Utils/LoginRoutes";
+import { useDispatch } from "react-redux";
+import { checkAuthState } from "./redux/slice/LoginSlice";
+import { useEffect } from "react";
+
 
 function App() {
+   const dispatch =  useDispatch()
+
+    useEffect(() => {
+      dispatch(checkAuthState())
+  
+    }, [dispatch]);
   return (
     <>
       <Navbar />
