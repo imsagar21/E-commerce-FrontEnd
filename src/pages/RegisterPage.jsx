@@ -28,11 +28,10 @@ const RegisterPage = () => {
       await updateProfile(res.user, {
         displayName: registerFormData.name,
       });
-      // ✅ Store only serializable user data in Redux
       const userData = {
         uid: res.user.uid,
         email: res.user.email,
-        displayName: registerFormData.name, // Since we updated the profile
+        displayName: registerFormData.name,
         photoURL: res.user.photoURL || null,
       };
 

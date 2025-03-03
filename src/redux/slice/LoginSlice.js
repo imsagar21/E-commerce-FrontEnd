@@ -38,7 +38,7 @@ export const { handleOnChange, setUser } = LoginSlice.actions;
 export const checkAuthState = () => (dispatch) => {
   onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
-      dispatch(setUser(JSON.parse(JSON.stringify(currentUser)))); // ✅ Persist user state
+      dispatch(setUser(JSON.parse(JSON.stringify(currentUser))));
     } else {
       dispatch(setUser(null));
     }
