@@ -1,9 +1,19 @@
-import React, { useContext } from "react";
-import { ECommerceContext } from "../context/Context";
+import React, { useEffect } from "react";
+import formatPrice from "../Utils/formatPrice";
+import { useDispatch } from "react-redux";
+import { handleAddButton, handleRemoveButton } from "../redux/slice/CartSlice";
 
 const CartTile = ({ singleCartItem }) => {
-
-   const {handleRemoveCartItem,handleCartButton} = useContext(ECommerceContext)
+  const dispatch = useDispatch()
+  function handleCartButton(getCartItem){
+      dispatch(handleAddButton(getCartItem))
+  }
+  function handleRemoveCartItem(getCartItem,isFullyRemove){
+    dispatch(handleRemoveButton({getCartItem,isFullyRemove}))
+  }
+    useEffect(()=>{
+      JSON.parse(localStorage.getItem("cartItems")) || []
+    },[])
   return (
     <div className="flex border p-4 items-center mt-2 rounded-md w-[700px]">
     {/* Image */}
@@ -16,7 +26,7 @@ const CartTile = ({ singleCartItem }) => {
     {/* Product Details */}
     <div className="ml-4 flex-1">
       <h2 className="text-lg font-semibold">{singleCartItem.title}</h2>
-      <p className="text-lg font-semibold">$ {singleCartItem.totalPrice}</p>
+      <p className="text-lg font-semibold">{formatPrice(singleCartItem.totalPrice)}</p>
       <p className="text-sm">Qty: {singleCartItem.quantity}</p>
   
       {/* Quantity Controls */}

@@ -1,31 +1,25 @@
-import React, { useContext, useEffect } from "react";
-import { ECommerceContext } from "../context/Context";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import formatPrice from "../Utils/formatPrice";
+import { useDispatch, useSelector } from "react-redux";
+import { handleAddCartButton } from "../redux/slice/CartSlice";
+import { fetchProductDetails } from "../fetchApi/fetchApi";
 
 const ProductDetails = () => {
-  const { productDetails, handleCartButton, setProductDetails } =
-    useContext(ECommerceContext);
+  const navigate = useNavigate()
   const { id } = useParams();
   const paramId = Number(id);
+const dispatch = useDispatch()
+const productDetails = useSelector((state=>state.products.productDetailsData))
 
-  async function fetchProductDetails(id) {
-    const responseApi = await fetch(
-      `https://fakestoreapi.in/api/products/${paramId}`
-    );
-    const result = await responseApi.json();
-    try {
-      if (result) {
-        setProductDetails(result.product);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
+function handleCartButton(productDetails){
+  dispatch(handleAddCartButton(productDetails))
+  navigate("/cart")
+}
   useEffect(() => {
-    fetchProductDetails();
-  }, [id]);
-  
+    dispatch(fetchProductDetails(paramId));
+  }, [dispatch]);
+
   return (
     <div className="flex gap-10 mt-30 px-20">
       <div className="w-[50%]">
@@ -40,10 +34,12 @@ const ProductDetails = () => {
           <span className="font-semibold py-3">Model :</span>
           {productDetails.model}
         </p>
-        <p className="py-3 font-semibold">${productDetails.price}</p>
+        <p className="py-3 font-semibold">
+          {formatPrice(productDetails.price)}
+        </p>
         <p className="font-light ">{productDetails.description}</p>
         <button
-          onClick={()=>handleCartButton(productDetails)}
+          onClick={() => handleCartButton(productDetails)}
           className="text-center font-semibold text-2xl  cursor-pointer w-[300px]  bg-gray-900 text-white py-2 mt-4"
         >
           Add to Cart

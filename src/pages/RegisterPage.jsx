@@ -1,31 +1,48 @@
 import React, { useContext } from "react";
 import { RegisterinputData } from "../components/forms/FormDetails";
-import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import CommonForm from "../components/forms/CommonForm";
-import { updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import auth from "./FireBase";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../redux/slice/LoginSlice";
 
 const RegisterPage = () => {
-  const { registerFormData, setRegisterFormData, handleRegisterWithFireBase } =
-    useContext(AuthContext);
   const navigate = useNavigate();
-  function handleRegisterForm(e) {
-    e.preventDefault();
-    handleRegisterWithFireBase()
-      .then((res) => {
-        updateProfile(res.user, {
-          displayName: registerFormData.name,
-        }).then(() => {
-          console.log(auth.currentUser.displayName);
+  const dispatch = useDispatch();
+  const registerFormData = useSelector((state) => state.login.registerFormData);
 
-          if(auth.currentUser.displayName){
-            navigate('/login')
-          }
-          
-        })
-      })
-      .catch((error) => console.log(error));
+  async function handleRegisterForm(e) {
+    e.preventDefault();
+    try {
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        registerFormData.email,
+        registerFormData.password
+      );
+
+      await updateProfile(res.user, {
+        displayName: registerFormData.name,
+      });
+      const userData = {
+        uid: res.user.uid,
+        email: res.user.email,
+        displayName: registerFormData.name,
+        photoURL: res.user.photoURL || null,
+      };
+
+      dispatch(setUser(userData));
+      console.log("User Registered Successfully", res.user);
+      await signOut(auth);
+      dispatch(setUser(null));
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration Error", error);
+    }
   }
 
   return (
@@ -33,9 +50,9 @@ const RegisterPage = () => {
       <CommonForm
         formControls={RegisterinputData}
         formData={registerFormData}
-        setFormData={setRegisterFormData}
         onSubmit={handleRegisterForm}
         buttonText="Register"
+        formType="registerFormData"
       />
     </div>
   );
